@@ -3,6 +3,7 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "forwardPorts": [3306],
   "customizations": {
     "vscode": {
       "extensions": [
