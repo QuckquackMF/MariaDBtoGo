@@ -1,1 +1,16 @@
-
+{
+    "name": "MariaDB Devcontainer",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "app",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-mssql.mssql",
+                "ms-vscode.remote-explorer"
+            ]
+        }
+    }
+}
