@@ -1,5 +1,0 @@
-# In docker-compose.yml
-services:
-  mariadb:
-    ports:
-      - "3306:3306"  # This is a port mapping
