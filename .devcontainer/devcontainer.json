@@ -4,7 +4,7 @@
     "dockerfile": "Dockerfile"
   },
   "remoteUser": "vscode",
-  "forwardPorts": [3306],
   "workspaceFolder": "/workspace",
-  "postStartCommand": "sudo service mariadb start && python3 .devcontainer/create_db.py"
+  "forwardPorts": [3306, 5678],
+  "postStartCommand": "sudo chown -R vscode:vscode /workspace && sudo service mariadb start && python3 .devcontainer/create_db.py"
 }
