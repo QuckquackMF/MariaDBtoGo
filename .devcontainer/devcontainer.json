@@ -1,7 +1,9 @@
 {
-  "name": "MariaDB Devcontainer",
-  "build": { "dockerfile": "Dockerfile" },
-  "forwardPorts": [3306],
-  "remoteUser": "vscode",
-  "postStartCommand": "sudo service mariadb start && python3 .devcontainer/create_db.py"
+    "name": "MariaDB Devcontainer",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "forwardPorts": [3306],
+    "remoteUser": "vscode",
+    "postStartCommand": "sudo service mariadb start && python3 .devcontainer/create_db.py"
 }
