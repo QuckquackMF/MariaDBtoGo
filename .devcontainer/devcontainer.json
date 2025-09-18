@@ -1,5 +1,19 @@
 {
-  "name": "MariaDB Dev Container",
-  "build": { "dockerfile": "Dockerfile" },
-  "workspaceFolder": "/workspace"
+    "name": "MariaDB DevContainer",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
+    "workspaceFolder": "/workspace",
+    "runArgs": [
+        "--cap-add=sys_nice"
+    ],
+    "postStartCommand": "echo 'Container ready! MariaDB should be running and mydatabase created.'",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "ms-python.python"
+    ],
+    "remoteUser": "vscode"
 }
