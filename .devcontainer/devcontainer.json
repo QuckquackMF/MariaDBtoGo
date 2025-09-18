@@ -1,18 +1,7 @@
 {
-  "name": "MariaDB Devcontainer with Node and Python",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "name": "MariaDB Devcontainer",
+  "build": { "dockerfile": "Dockerfile" },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
-  "postStartCommand": "sudo service mariadb start",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-mssql.mssql",
-        "ms-python.python",
-        "dbaeumer.vscode-eslint"
-      ]
-    }
-  }
+  "postStartCommand": "sudo service mariadb start && sudo mariadb -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;\" && python3 .devcontainer/create_db.py"
 }
