@@ -1,9 +1,10 @@
 {
-    "name": "MariaDB Devcontainer",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
-    "forwardPorts": [3306],
-    "remoteUser": "vscode",
-    "postStartCommand": "sudo service mariadb start && python3 .devcontainer/create_db.py"
+  "name": "My Codespace Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "postStartCommand": "python3 .devcontainer/create_db.py",
+  "features": {
+    "docker-in-docker": "latest"
+  }
 }
