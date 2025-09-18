@@ -1,11 +1,11 @@
 FROM ubuntu:22.04
 
-# Install dependencies
+# Install MariaDB, Python, pip
 RUN apt-get update && apt-get install -y \
+    mariadb-server \
     python3 \
     python3-pip \
     sudo \
-    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Create vscode user
@@ -14,11 +14,20 @@ RUN groupadd --gid 1000 vscode \
     && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
     && chmod 0440 /etc/sudoers.d/vscode
 
+# Prepare MariaDB socket and data folder
+RUN mkdir -p /run/mysqld /var/lib/mysql && chown -R mysql:mysql /run/mysqld /var/lib/mysql
+
+# Copy Python script
+COPY create_db.py /workspace/.devcontainer/create_db.py
+
 WORKDIR /workspace
 
-# Copy Python requirements and install
+# Install Python requirements
 COPY requirements.txt /workspace/requirements.txt
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Copy your Python scripts
-COPY create_db.py /workspace/.devcontainer/create_db.py
+# Expose default MariaDB port
+EXPOSE 3306
+
+# Start MariaDB and run the Python script
+CMD ["bash", "-c", "sudo mysqld_safe --skip-networking=0 --skip-grant-tables & sleep 5 && python3 .devcontainer/create_db.py && tail -f /dev/null"]
