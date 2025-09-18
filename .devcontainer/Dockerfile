@@ -17,6 +17,10 @@ RUN groupadd --gid 1000 vscode \
 # Prepare MariaDB socket
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
+# Configure MariaDB root to use socket authentication (no password)
+RUN service mariadb start && \
+    mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED VIA unix_socket; FLUSH PRIVILEGES;"
+
 # Copy Python script
 COPY create_db.py /workspace/.devcontainer/create_db.py
 
