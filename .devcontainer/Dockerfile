@@ -1,3 +1,4 @@
+# Use Ubuntu 22.04 as base
 FROM ubuntu:22.04
 
 # Install dependencies
@@ -17,17 +18,12 @@ RUN groupadd --gid 1000 vscode \
 # Prepare MariaDB socket
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
-# Copy scripts
-COPY create_db.py /workspace/create_db.py
-COPY entrypoint.sh /workspace/entrypoint.sh
-COPY requirements.txt /workspace/requirements.txt
-
+# Set working directory
 WORKDIR /workspace
 
-# Install Python requirements
+# Copy Python script and requirements
+COPY create_db.py /workspace/.devcontainer/create_db.py
+COPY requirements.txt /workspace/requirements.txt
+
+# Install Python dependencies
 RUN pip3 install -r requirements.txt
-
-# Make entrypoint executable
-RUN chmod +x /workspace/entrypoint.sh
-
-ENTRYPOINT ["/workspace/entrypoint.sh"]
