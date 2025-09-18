@@ -6,5 +6,7 @@
   "remoteUser": "vscode",
   "workspaceFolder": "/workspace",
   "forwardPorts": [3306, 5678],
-  "postStartCommand": "sudo chown -R vscode:vscode /workspace && sudo service mariadb start && python3 -m debugpy --listen 0.0.0.0:5678 --wait-for-client .devcontainer/create_db.py"
+
+  // Post-start command runs everything in the background; container starts immediately
+  "postStartCommand": "sudo chown -R vscode:vscode /workspace && sudo service mariadb start && nohup python3 -m debugpy --listen 0.0.0.0:5678 .devcontainer/create_db.py &"
 }
