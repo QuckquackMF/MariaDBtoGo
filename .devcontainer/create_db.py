@@ -1,18 +1,9 @@
-import time
 import mysql.connector
 
-print("⏳ Waiting for MariaDB to be ready...")
-
-while True:
-    try:
-        conn = mysql.connector.connect(
-            user="root",
-            unix_socket="/run/mysqld/mysqld.sock"
-        )
-        break
-    except mysql.connector.Error:
-        print("Waiting for database... retrying in 5 seconds")
-        time.sleep(5)
+conn = mysql.connector.connect(
+    user="root",
+    unix_socket="/run/mysqld/mysqld.sock"
+)
 
 cursor = conn.cursor()
 cursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
