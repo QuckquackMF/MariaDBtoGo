@@ -1,7 +1,7 @@
 import mysql.connector
 import time
 
-# Wait a bit to make sure MariaDB is running
+print("⏳ Waiting for MariaDB to be ready...")
 time.sleep(3)
 
 try:
@@ -17,11 +17,9 @@ try:
     cursor.execute("FLUSH PRIVILEGES;")
     conn.commit()
 
-    print("Database 'mydatabase' created and user 'vscode' granted full privileges.")
-
+    print("Database 'mydatabase' created and user 'vscode' granted privileges.")
 except mysql.connector.Error as err:
     print(f"Error: {err}")
-
 finally:
     if 'conn' in locals() and conn.is_connected():
         cursor.close()
