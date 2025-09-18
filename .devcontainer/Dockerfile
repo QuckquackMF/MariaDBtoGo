@@ -21,11 +21,12 @@ RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 RUN service mariadb start && \
     mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED VIA unix_socket; FLUSH PRIVILEGES;"
 
-# Copy Python script
-COPY create_db.py /workspace/.devcontainer/create_db.py
-
+# Set working directory
 WORKDIR /workspace
 
-# Install Python requirements
+# Copy Python script and requirements
+COPY create_db.py /workspace/.devcontainer/create_db.py
 COPY requirements.txt /workspace/requirements.txt
+
+# Install Python dependencies
 RUN pip3 install -r requirements.txt
