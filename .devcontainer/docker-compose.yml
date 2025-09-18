@@ -17,10 +17,10 @@ services:
   dev:
     build:
       context: .
-      dockerfile: .devcontainer/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       mariadb:
         condition: service_healthy
     volumes:
-      - .:/workspace
-    command: sleep infinity  # keep container running for Codespaces
+      - ..:/workspace
+    command: sleep infinity
