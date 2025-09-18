@@ -1,14 +1,28 @@
-import subprocess
+import mysql.connector
+import time
 
-# Start MariaDB
-subprocess.run("sudo service mariadb start", shell=True, check=True)
+# Wait a bit to make sure MariaDB is running
+time.sleep(3)
 
-# Create 'mydatabase' and 'vscode' user with full privileges
-subprocess.run("""
-sudo mariadb -e "CREATE DATABASE IF NOT EXISTS mydatabase;
-CREATE USER IF NOT EXISTS 'vscode'@'%' IDENTIFIED BY '';
-GRANT ALL PRIVILEGES ON mydatabase.* TO 'vscode'@'%';
-FLUSH PRIVILEGES;"
-""", shell=True, check=True)
+try:
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root"
+    )
+    cursor = conn.cursor()
 
-print("✅ MariaDB is running, database 'mydatabase' created, user 'vscode' ready to connect!")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase;")
+    cursor.execute("CREATE USER IF NOT EXISTS 'vscode'@'%' IDENTIFIED BY '';")
+    cursor.execute("GRANT ALL PRIVILEGES ON mydatabase.* TO 'vscode'@'%';")
+    cursor.execute("FLUSH PRIVILEGES;")
+    conn.commit()
+
+    print("Database 'mydatabase' created and user 'vscode' granted full privileges.")
+
+except mysql.connector.Error as err:
+    print(f"Error: {err}")
+
+finally:
+    if 'conn' in locals() and conn.is_connected():
+        cursor.close()
+        conn.close()
