@@ -1,10 +1,7 @@
 {
-  "name": "My Codespace Dev Container",
-  "dockerComposeFile": "../docker-compose.yml",
+  "name": "MariaDB Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
   "service": "dev",
   "workspaceFolder": "/workspace",
-  "postStartCommand": "python3 .devcontainer/create_db.py",
-  "features": {
-    "docker-in-docker": "latest"
-  }
+  "postStartCommand": "python3 .devcontainer/create_db.py"
 }
