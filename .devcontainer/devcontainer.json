@@ -3,5 +3,5 @@
   "build": { "dockerfile": "Dockerfile" },
   "forwardPorts": [3306],
   "remoteUser": "vscode",
-  "postStartCommand": "sudo service mariadb start && sudo mariadb -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;\" && python3 .devcontainer/create_db.py"
+  "postStartCommand": "sudo service mariadb start && python3 .devcontainer/create_db.py"
 }
