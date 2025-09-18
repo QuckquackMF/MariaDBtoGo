@@ -1,15 +1,9 @@
 {
-    "name": "MariaDB DevContainer",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "context": "."
-    },
-    "workspaceFolder": "/workspace",
-    "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
-    },
-    "extensions": [
-        "ms-python.python"
-    ],
-    "remoteUser": "vscode"
+  "name": "MariaDB DevContainer",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postStartCommand": "python3 .devcontainer/create_db.py",
+  "remoteUser": "vscode",
+  "forwardPorts": [3306]
 }
