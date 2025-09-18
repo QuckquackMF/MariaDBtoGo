@@ -7,17 +7,16 @@ time.sleep(3)
 try:
     conn = mysql.connector.connect(
         host="localhost",
-        user="root"
+        user="vscode",
+        password="",  # empty password
+        database="mydatabase"
     )
     cursor = conn.cursor()
 
-    cursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase;")
-    cursor.execute("CREATE USER IF NOT EXISTS 'vscode'@'%' IDENTIFIED BY '';")
-    cursor.execute("GRANT ALL PRIVILEGES ON mydatabase.* TO 'vscode'@'%';")
-    cursor.execute("FLUSH PRIVILEGES;")
+    cursor.execute("CREATE TABLE IF NOT EXISTS test_table (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50));")
     conn.commit()
 
-    print("Database 'mydatabase' created and user 'vscode' granted privileges.")
+    print("Database 'mydatabase' is ready and table 'test_table' created.")
 except mysql.connector.Error as err:
     print(f"Error: {err}")
 finally:
