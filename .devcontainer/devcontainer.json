@@ -3,7 +3,8 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "postStartCommand": "python3 .devcontainer/create_db.py",
   "remoteUser": "vscode",
-  "forwardPorts": [3306]
+  "postStartCommand": "python3 .devcontainer/create_db.py",
+  "forwardPorts": [3306],
+  "workspaceFolder": "/workspace"
 }
