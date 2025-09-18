@@ -27,3 +27,9 @@ COPY requirements.txt /workspace/requirements.txt
 
 # Install Python dependencies
 RUN pip3 install -r requirements.txt
+
+# Expose MariaDB port
+EXPOSE 3306
+
+# Switch to vscode user by default
+USER vscode
