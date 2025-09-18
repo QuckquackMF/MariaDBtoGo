@@ -18,6 +18,9 @@ RUN groupadd --gid 1000 vscode \
 # Prepare MariaDB socket
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
+# Create workspace and fix permissions
+RUN mkdir -p /workspace && chown -R vscode:vscode /workspace
+
 # Set working directory
 WORKDIR /workspace
 
@@ -25,11 +28,11 @@ WORKDIR /workspace
 COPY create_db.py /workspace/.devcontainer/create_db.py
 COPY requirements.txt /workspace/requirements.txt
 
-# Install Python dependencies
-RUN pip3 install -r requirements.txt
+# Install Python dependencies (including debugger)
+RUN pip3 install -r requirements.txt debugpy
 
-# Expose MariaDB port
-EXPOSE 3306
+# Expose MariaDB and debug ports
+EXPOSE 3306 5678
 
 # Switch to vscode user by default
 USER vscode
