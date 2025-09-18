@@ -6,9 +6,8 @@ print("⏳ Waiting for MariaDB to be ready...")
 while True:
     try:
         conn = mysql.connector.connect(
-            host="mariadb",  # Docker service name
             user="root",
-            port=3306
+            host="127.0.0.1"  # use TCP to avoid socket issues
         )
         break
     except mysql.connector.Error:
