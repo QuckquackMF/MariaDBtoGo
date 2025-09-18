@@ -1,42 +1,27 @@
-# Start from a minimal Debian base image
-FROM debian:bullseye-slim
+FROM ubuntu:22.04
 
-# Install system dependencies and tools
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    sudo \
-    curl \
-    gnupg \
-    procps \
-    locales \
     mariadb-server \
-    mariadb-client \
-    libicu-dev \
     python3 \
     python3-pip \
-    nodejs \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up locale to prevent errors with some tools
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
+# Create vscode user
+RUN groupadd --gid 1000 vscode \
+    && useradd -m -s /bin/bash --uid 1000 --gid 1000 vscode \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
+    && chmod 0440 /etc/sudoers.d/vscode
 
-# Install debugpy for Python debugging
-RUN pip3 install debugpy
+# Prepare MariaDB socket
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
-# Create non-root vscode user
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+# Copy Python script
+COPY create_db.py /workspace/.devcontainer/create_db.py
 
-RUN groupadd --gid $USER_GID $USERNAME \
-  && useradd -m -s /bin/bash --uid $USER_UID --gid $USER_GID $USERNAME \
-  && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
-  && chmod 0440 /etc/sudoers.d/$USERNAME
+WORKDIR /workspace
 
-# Expose MariaDB port
-EXPOSE 3306
-
-# Default to root user so we can run service commands with sudo
-USER root
-
-# Use default shell as entrypoint (Codespaces will override ENTRYPOINT/CMD)
-CMD ["bash"]
+# Install Python requirements
+COPY requirements.txt /workspace/requirements.txt
+RUN pip3 install -r requirements.txt
