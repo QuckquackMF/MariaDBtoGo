@@ -1,7 +1,5 @@
 {
   "name": "MariaDB Dev Container",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "dev",
-  "workspaceFolder": "/workspace",
-  "postStartCommand": "python3 .devcontainer/create_db.py"
+  "build": { "dockerfile": "Dockerfile" },
+  "workspaceFolder": "/workspace"
 }
