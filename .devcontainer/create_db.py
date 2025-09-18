@@ -7,8 +7,7 @@ while True:
     try:
         conn = mysql.connector.connect(
             user="root",
-            password="root",
-            unix_socket="/run/mysqld/mysqld.sock"
+            unix_socket="/run/mysqld/mysqld.sock"  # socket auth
         )
         break
     except mysql.connector.Error:
