@@ -1,6 +1,7 @@
+# Base image
 FROM ubuntu:22.04
 
-# Install MariaDB, Python, pip
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     mariadb-server \
     python3 \
@@ -14,20 +15,21 @@ RUN groupadd --gid 1000 vscode \
     && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
     && chmod 0440 /etc/sudoers.d/vscode
 
-# Prepare MariaDB socket and data folder
-RUN mkdir -p /run/mysqld /var/lib/mysql && chown -R mysql:mysql /run/mysqld /var/lib/mysql
+# Prepare MariaDB socket
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
-# Copy Python script
-COPY create_db.py /workspace/.devcontainer/create_db.py
+# Copy Python script and requirements
+COPY create_db.py /workspace/create_db.py
+COPY requirements.txt /workspace/requirements.txt
 
 WORKDIR /workspace
 
-# Install Python requirements
-COPY requirements.txt /workspace/requirements.txt
+# Install Python dependencies
 RUN pip3 install -r requirements.txt
 
-# Expose default MariaDB port
-EXPOSE 3306
+# Copy entrypoint script
+COPY devcontainer-entrypoint.sh /usr/local/bin/devcontainer-entrypoint.sh
+RUN chmod +x /usr/local/bin/devcontainer-entrypoint.sh
 
-# Start MariaDB and run the Python script
-CMD ["bash", "-c", "sudo mysqld_safe --skip-networking=0 --skip-grant-tables & sleep 5 && python3 .devcontainer/create_db.py && tail -f /dev/null"]
+# Entrypoint
+ENTRYPOINT ["/usr/local/bin/devcontainer-entrypoint.sh"]
