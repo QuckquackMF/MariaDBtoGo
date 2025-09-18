@@ -1,33 +1,23 @@
 import mysql.connector
 import time
 
-DB_NAME = "mydatabase"
-SOCKET_PATH = "/run/mysqld/mysqld.sock"
-TIMEOUT = 60  # seconds
-INTERVAL = 5  # seconds between retries
-
-print(f"⏳ Waiting for MariaDB to be ready at {SOCKET_PATH} (timeout {TIMEOUT}s)...")
-
-start_time = time.time()
+print("⏳ Waiting for MariaDB to be ready...")
 
 while True:
     try:
         conn = mysql.connector.connect(
+            host="mariadb",  # Docker service name
             user="root",
-            unix_socket=SOCKET_PATH
+            port=3306
         )
         break
     except mysql.connector.Error:
-        elapsed = time.time() - start_time
-        if elapsed > TIMEOUT:
-            print(f"❌ Timeout: MariaDB not ready after {TIMEOUT} seconds.")
-            exit(1)
-        print(f"Waiting for database... retrying in {INTERVAL} seconds")
-        time.sleep(INTERVAL)
+        print("Waiting for database... retrying in 5 seconds")
+        time.sleep(5)
 
 cursor = conn.cursor()
-cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME}")
-print(f"✅ Database '{DB_NAME}' created or already exists.")
+cursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
+print("✅ Database 'mydatabase' created or already exists.")
 
 cursor.close()
 conn.close()
