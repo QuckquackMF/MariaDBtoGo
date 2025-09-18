@@ -1,13 +1,12 @@
-import mysql.connector
+import subprocess
 
-conn = mysql.connector.connect(
-    user="root",
-    unix_socket="/run/mysqld/mysqld.sock"
-)
+# Start MariaDB safely
+subprocess.run("sudo service mariadb start", shell=True, check=True)
 
-cursor = conn.cursor()
-cursor.execute("CREATE DATABASE IF NOT EXISTS mydatabase")
-print("✅ Database 'mydatabase' created or already exists.")
-
-cursor.close()
-conn.close()
+# Create 'vscode' user with all privileges, no password
+subprocess.run("""
+sudo mariadb -e "CREATE DATABASE IF NOT EXISTS mydatabase;
+CREATE USER IF NOT EXISTS 'vscode'@'%' IDENTIFIED BY '';
+GRANT ALL PRIVILEGES ON mydatabase.* TO 'vscode'@'%';
+FLUSH PRIVILEGES;"
+""", shell=True, check=True)
