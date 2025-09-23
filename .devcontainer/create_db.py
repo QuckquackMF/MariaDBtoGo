@@ -1,7 +1,7 @@
 import mysql.connector
 import time
 
-print("⏳ Waiting for MariaDB to be ready...")
+print("Waiting for MariaDB to be ready...")
 time.sleep(3)
 
 try:
