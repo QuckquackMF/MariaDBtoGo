@@ -6,7 +6,7 @@
   "remoteUser": "vscode",
   "workspaceFolder": "/workspace",
   "forwardPorts": [3306],
-  "postStartCommand": "sudo chown -R vscode:vscode /workspace && sudo mkdir -p /run/mysqld && sudo chown mysql:mysql /run/mysqld && sudo mysqld_safe --skip-networking=0 --socket=/run/mysqld/mysqld.sock & sleep 5 && sudo mariadb -e 'CREATE DATABASE IF NOT EXISTS mydatabase; CREATE USER IF NOT EXISTS \\'vscode\\'@\\'%\\' IDENTIFIED BY \\'\\'; GRANT ALL PRIVILEGES ON mydatabase.* TO \\'vscode\\'@\\'%\\'; FLUSH PRIVILEGES;' && python3 .devcontainer/create_db.py && (cd /workspace && git rev-parse --is-inside-work-tree 2>/dev/null || git init) && (cd /workspace && git branch -M main)",
+  "postStartCommand": "sudo chown -R vscode:vscode /workspace && sudo service mariadb start && sudo mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase; CREATE USER IF NOT EXISTS 'vscode'@'%' IDENTIFIED BY ''; GRANT ALL PRIVILEGES ON mydatabase.* TO 'vscode'@'%'; FLUSH PRIVILEGES;\" && python3 .devcontainer/create_db.py",
   "extensions": [
     "ms-python.python"
   ]
