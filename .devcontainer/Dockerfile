@@ -1,28 +1,21 @@
-# Use Ubuntu 22.04
+# Base image
 FROM ubuntu:22.04
 
-# Non-interactive installs
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install MariaDB, Python, Git, sudo
-RUN apt-get update && apt-get install -y \
-    mariadb-server \
-    python3 \
-    python3-pip \
-    git \
-    sudo \
+# Install necessary packages
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        mariadb-server \
+        python3 \
+        python3-pip \
+        git \
+        sudo \
     && rm -rf /var/lib/apt/lists/*
 
-# Set root user for Codespaces
-USER root
-
-# Setup MariaDB directories
-RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
-
-# Setup workspace
-RUN mkdir -p /workspace && chown -R root:root /workspace
+# Set working directory
 WORKDIR /workspace
 
 # Copy requirements if exists
 COPY requirements.txt /workspace/requirements.txt
+
+# Install Python dependencies
 RUN pip3 install -r /workspace/requirements.txt || true
