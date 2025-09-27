@@ -32,8 +32,5 @@ COPY requirements.txt /workspace/requirements.txt
 # Install Python dependencies
 RUN pip3 install -r /workspace/requirements.txt
 
-# Initialize Git repo with main branch
-RUN cd /workspace && git init && git branch -M main
-
 # Switch to vscode user
 USER vscode
