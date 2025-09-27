@@ -1,13 +1,11 @@
 {
-  "name": "MariaDB DevContainer",
+  "name": "MariaDB + Python + Git",
   "build": {
     "dockerfile": "Dockerfile"
   },
   "remoteUser": "root",
   "workspaceFolder": "/workspace",
   "forwardPorts": [3306],
-  "postStartCommand": "service mariadb start && mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase;\" && pip3 install -r requirements.txt",
-  "extensions": [
-    "ms-python.python"
-  ]
+  "postStartCommand": "service mariadb start && mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase;\" && if [ ! -d .git ]; then git init && git branch -M main; fi",
+  "extensions": ["ms-python.python"]
 }
