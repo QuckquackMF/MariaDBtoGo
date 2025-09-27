@@ -25,12 +25,15 @@ RUN mkdir -p /workspace && chown -R vscode:vscode /workspace
 # Set working directory
 WORKDIR /workspace
 
-# Copy Python script and requirements from .devcontainer
+# Copy Python script and requirements
 COPY create_db.py /workspace/.devcontainer/create_db.py
 COPY requirements.txt /workspace/requirements.txt
 
 # Install Python dependencies
 RUN pip3 install -r /workspace/requirements.txt
+
+# Initialize Git repo with main branch
+RUN cd /workspace && git init && git branch -M main
 
 # Switch to vscode user
 USER vscode
