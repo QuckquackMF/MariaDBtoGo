@@ -1,7 +1,7 @@
 # Use Ubuntu 22.04 as base
 FROM ubuntu:22.04
 
-# Install dependencies (added git)
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     mariadb-server \
     python3 \
@@ -26,7 +26,7 @@ RUN mkdir -p /workspace && chown -R vscode:vscode /workspace
 WORKDIR /workspace
 
 # Copy Python script and requirements
-COPY create_db.py /workspace/.devcontainer/create_db.py
+COPY .devcontainer/create_db.py /workspace/.devcontainer/create_db.py
 COPY requirements.txt /workspace/requirements.txt
 
 # Install Python dependencies
