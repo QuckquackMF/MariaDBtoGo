@@ -7,7 +7,6 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     sudo \
-    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Create vscode user
@@ -30,7 +29,7 @@ COPY create_db.py /workspace/.devcontainer/create_db.py
 COPY requirements.txt /workspace/requirements.txt
 
 # Install Python dependencies
-RUN pip3 install -r /workspace/requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Switch to vscode user
 USER vscode
