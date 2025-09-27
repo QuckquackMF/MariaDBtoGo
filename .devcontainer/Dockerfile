@@ -1,39 +1,28 @@
-# Use Ubuntu 22.04 as base
+# Use Ubuntu 22.04
 FROM ubuntu:22.04
 
-# Install dependencies
+# Non-interactive installs
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install MariaDB, Python, Git, sudo
 RUN apt-get update && apt-get install -y \
     mariadb-server \
     python3 \
     python3-pip \
-    sudo \
     git \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
-# Create vscode user
-RUN groupadd --gid 1000 vscode \
-    && useradd -m -s /bin/bash --uid 1000 --gid 1000 vscode \
-    && echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
-    && chmod 0440 /etc/sudoers.d/vscode
+# Set root user for Codespaces
+USER root
 
-# Prepare MariaDB socket
+# Setup MariaDB directories
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
-# Create workspace and fix permissions
-RUN mkdir -p /workspace && chown -R vscode:vscode /workspace
-
-# Set working directory
+# Setup workspace
+RUN mkdir -p /workspace && chown -R root:root /workspace
 WORKDIR /workspace
 
-# Copy Python script and requirements
-COPY create_db.py /workspace/.devcontainer/create_db.py
+# Copy requirements if exists
 COPY requirements.txt /workspace/requirements.txt
-
-# Install Python dependencies
-RUN pip3 install -r /workspace/requirements.txt
-
-# Initialize Git repo with main branch
-RUN cd /workspace && git init && git branch -M main
-
-# Switch to vscode user
-USER vscode
+RUN pip3 install -r /workspace/requirements.txt || true
