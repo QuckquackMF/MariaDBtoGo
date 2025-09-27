@@ -25,12 +25,12 @@ RUN mkdir -p /workspace && chown -R vscode:vscode /workspace
 # Set working directory
 WORKDIR /workspace
 
-# Inside Dockerfile
+# Copy Python script and requirements from .devcontainer
 COPY create_db.py /workspace/.devcontainer/create_db.py
 COPY requirements.txt /workspace/requirements.txt
 
 # Install Python dependencies
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r /workspace/requirements.txt
 
 # Switch to vscode user
 USER vscode
