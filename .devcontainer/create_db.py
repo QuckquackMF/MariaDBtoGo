@@ -2,13 +2,13 @@ import mysql.connector
 import time
 
 print("⏳ Waiting a few seconds for MariaDB to be ready...")
-time.sleep(3)  # short delay
+time.sleep(3)
 
 try:
     conn = mysql.connector.connect(
         host="localhost",
         user="vscode",
-        password="",  # empty password
+        password="",
         database="mydatabase"
     )
     cursor = conn.cursor()
