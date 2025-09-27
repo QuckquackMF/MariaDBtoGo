@@ -1,9 +1,11 @@
 {
-  "name": "MariaDB DevContainer Template",
-  "build": { "dockerfile": "Dockerfile" },
-  "remoteUser": "vscode",
+  "name": "MariaDB + Python + Git",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "root",
   "workspaceFolder": "/workspace",
   "forwardPorts": [3306],
-  "postStartCommand": "sudo service mariadb start && echo '⏳ Waiting for MariaDB socket...' && for i in {1..15}; do if [ -S /run/mysqld/mysqld.sock ]; then echo '✅ MariaDB is ready'; break; fi; sleep 1; done && sudo mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase; CREATE USER IF NOT EXISTS 'vscode'@'%' IDENTIFIED BY ''; GRANT ALL PRIVILEGES ON mydatabase.* TO 'vscode'@'%'; FLUSH PRIVILEGES;\" && python3 .devcontainer/create_db.py || echo '⚠️ Python script failed, continuing...'",
+  "postStartCommand": "service mariadb start && mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase;\" && if [ ! -d .git ]; then git init && git branch -M main; fi",
   "extensions": ["ms-python.python"]
 }
