@@ -1,7 +1,7 @@
 import mysql.connector
 import time
 
-print("⏳ Waiting a few seconds for MariaDB to be ready...")
+print("Waiting a few seconds for MariaDB to be ready...")
 time.sleep(3)
 
 try:
@@ -12,13 +12,10 @@ try:
         database="mydatabase"
     )
     cursor = conn.cursor()
-    cursor.execute(
-        "CREATE TABLE IF NOT EXISTS test_table (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50));"
-    )
     conn.commit()
-    print("✅ Database 'mydatabase' is ready and table 'test_table' created.")
+    print("Database 'mydatabase' is ready and table 'test_table' created.")
 except mysql.connector.Error as err:
-    print(f"⚠️ Error connecting to MariaDB: {err}")
+    print(f"Error connecting to MariaDB: {err}")
 finally:
     if 'conn' in locals() and conn.is_connected():
         cursor.close()
