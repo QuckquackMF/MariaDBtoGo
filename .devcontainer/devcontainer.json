@@ -1,8 +1,6 @@
 {
   "name": "MariaDB DevContainer Template",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "build": { "dockerfile": "Dockerfile" },
   "remoteUser": "vscode",
   "workspaceFolder": "/workspace",
   "forwardPorts": [3306],
