@@ -1,11 +1,13 @@
 {
-  "name": "MariaDB + Python + Git",
+  "name": "MariaDB DevContainer",
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "remoteUser": "root",
+  "remoteUser": "vscode",
   "workspaceFolder": "/workspace",
   "forwardPorts": [3306],
-  "postStartCommand": "service mariadb start && mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase;\" && if [ ! -d .git ]; then git init && git branch -M main; fi",
-  "extensions": ["ms-python.python"]
+  "postStartCommand": "sudo chown -R vscode:vscode /workspace && sudo service mariadb start && sudo mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase; GRANT ALL PRIVILEGES ON mydatabase.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;\" && python3 .devcontainer/create_db.py",
+  "extensions": [
+    "ms-python.python"
+  ]
 }
