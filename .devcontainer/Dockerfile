@@ -1,12 +1,13 @@
 # Use Ubuntu 22.04 as base
 FROM ubuntu:22.04
 
-# Install dependencies
+# Install dependencies (added git)
 RUN apt-get update && apt-get install -y \
     mariadb-server \
     python3 \
     python3-pip \
     sudo \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Create vscode user
