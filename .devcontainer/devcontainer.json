@@ -1,13 +1,9 @@
 {
-  "name": "MariaDB DevContainer",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "name": "MariaDB DevContainer Template",
+  "build": { "dockerfile": "Dockerfile" },
   "remoteUser": "vscode",
   "workspaceFolder": "/workspace",
   "forwardPorts": [3306],
-  "postStartCommand": "sudo chown -R vscode:vscode /workspace && sudo service mariadb start && sudo mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase; GRANT ALL PRIVILEGES ON mydatabase.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;\" && python3 .devcontainer/create_db.py",
-  "extensions": [
-    "ms-python.python"
-  ]
+  "postStartCommand": "sudo service mariadb start && echo 'Waiting for MariaDB socket...' && for i in {1..15}; do if [ -S /run/mysqld/mysqld.sock ]; then echo 'MariaDB is ready'; break; fi; sleep 1; done && sudo mariadb -e \"CREATE DATABASE IF NOT EXISTS mydatabase; CREATE USER IF NOT EXISTS 'vscode'@'%' IDENTIFIED BY ''; GRANT ALL PRIVILEGES ON mydatabase.* TO 'vscode'@'%'; FLUSH PRIVILEGES;\" && python3 .devcontainer/create_db.py || echo 'Python script failed, continuing...'",
+  "extensions": ["ms-python.python"]
 }
